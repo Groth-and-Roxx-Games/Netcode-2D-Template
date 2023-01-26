@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class PlayerNetwork : MonoBehaviour
+public class PlayerNetwork : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private Vector2 _movementInput;
+    [SerializeField] private float _movementSpeed;
+
+    private void Awake()
     {
-        
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate() 
     {
-        
+        if (!IsOwner) return;
+        _rigidbody.velocity = _movementInput * _movementSpeed;
+    }
+    private void OnMove(InputValue inputValue) 
+    {
+        _movementInput = inputValue.Get<Vector2>();
     }
 }

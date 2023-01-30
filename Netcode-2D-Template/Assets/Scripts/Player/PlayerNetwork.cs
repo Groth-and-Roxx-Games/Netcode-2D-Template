@@ -17,6 +17,14 @@ public class PlayerNetwork : NetworkBehaviour
         aimTransform = transform.Find("AimedParent");
     }
 
+    private void Update() 
+    {
+        if (IsLocalPlayer) 
+        { 
+            MousePositionHandler();
+        }
+    }
+
     private void FixedUpdate() 
     {
         if (!IsOwner) return;
@@ -25,5 +33,17 @@ public class PlayerNetwork : NetworkBehaviour
     private void OnMove(InputValue inputValue) 
     {
         _movementInput = inputValue.Get<Vector2>();
+    }
+
+        public void MousePositionHandler() 
+    {
+        // Grabs the main camera and does a "screen to world point" on the mouse position
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // Sets the z axis to 0
+        mouseWorldPosition.z = 0f;
+        Vector3 aimDirection = (mouseWorldPosition - transform.position).normalized;
+        // Convert to a Euler angle
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+        aimTransform.eulerAngles = new Vector3(0, 0, angle);
     }
 }

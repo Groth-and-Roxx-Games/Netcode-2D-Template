@@ -12,14 +12,12 @@ public class PlayerNetwork : NetworkBehaviour
     [SerializeField] private Transform aimTransform;
     [SerializeField] private Transform customCursorTransform;
     [SerializeField] private Vector3 mousePosition;
-    [SerializeField] private SpriteRenderer cursorSpriteRenderer;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         aimTransform = transform.Find("AimedParent");
         customCursorTransform = transform.Find("PlayerCursor");
-        cursorSpriteRenderer = GameObject.Find("CursorSprite").GetComponent<SpriteRenderer>();
     }
 
     private void Update() 
